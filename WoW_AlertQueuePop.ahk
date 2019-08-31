@@ -35,7 +35,7 @@ Global wowid
 ; Discord Message - Replace 0 with 1 here if you would like to recieve a message to a discord channel when your queue pops
 EnableDiscordMessage := 0
 
-; Type in your Discord API token if you enable DiscordMessage (How to get a webhook for Discord: https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks )
+; Type in your Discord channel Webhook if you enable DiscordMessage (How to get a webhook for Discord: https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks )
 DiscordWebhook := "https://INSERT_WEBHOOK_URL_HERE"
 Global DiscordWebhook
 
