@@ -1,10 +1,10 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; World of Warcraft Alert Queue Pop Script
+; World of Warcraft anti disconnect script
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Written by Kjella
 ; Date: 31. August 2019
@@ -96,21 +96,38 @@ AutodetectQueuePop:
             Sleep 60000
         }
         else {
-            ; Image was found. Client is currently at the character select screen.
-            ; Sending message to Discord if user has elected to do so
-            If (EnableDiscordMessage) {
-                SendDiscordMessage(DiscordMessageContent)
+
+            MsgBox Found WoW.png image 
+
+            ; Looking for the bottom left portion of the queue screen
+            ImageSearch, x, y, %xPos%, %yPos%, %endxPos%, %endyPos%, .\queue_screen.png
+
+            if (ErrorLevel = 2) {
+                MsgBox AutodetectQueuePop failed miserably. For some reason it is unable to search the WoW window for character select screen
             }
+            else if (ErrorLevel = 1) {
+                ; Image was found. Client is currently at the character select screen.
+                ; Sending message to Discord if user has elected to do so
+                If (EnableDiscordMessage) {
+                    SendDiscordMessage(DiscordMessageContent)
+                }
 
-            ;Sleep for 20 minutes, since you have a 30 minute window before you're disconnected
-            ;This essentially prolongs the time required before you're DCd to 1 hour 20 minutes (20 min sleep + 30 min AFK + 30 min on char select)
-;            Sleep 1200000
+                ;Sleep for 20 minutes, since you have a 30 minute window before you're disconnected
+                ;This essentially prolongs the time required before you're DCd to 1 hour 20 minutes (20 min sleep + 30 min AFK + 30 min on char select)
+;                Sleep 1200000
 
-            ; Press enter to enter the world
-;            ControlSend,, {Enter}, ahk_id %wowid%
+                ; Press enter to enter the world
+;                ControlSend,, {Enter}, ahk_id %wowid%
 
-            ; Disable AutodetectQueuePop so it doesn't keep running in the background
-            EnableAutodetectQueuePop := !EnableAutodetectQueuePop
+                ; Disable AutodetectQueuePop so it doesn't keep running in the background
+                EnableAutodetectQueuePop := !EnableAutodetectQueuePop
+                ; Image was not found, assuming that client is still in queue. Sleep for 60 seconds before checking again
+                Sleep 60000
+            }
+            else {
+                ; Image was found, assuming that client is still in queue. Sleep for 60 seconds before checking again
+                Sleep 60000
+            }
         }
     }
 Return ; End AutodetectQueuePop
