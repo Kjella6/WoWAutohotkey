@@ -3,7 +3,7 @@ World of Warcraft Autohotkey script
 
 To start using this script:
 1. Install Autohotkey
-2. Download WoW_AlertQueuePop.ahk and wow.png to the same folder on your computer
+2. Download WoW_AlertQueuePop.ahk, quene_screen.png and wow.png to the same folder on your computer
 3. Double click on the script to send it to the system tray
 
 
